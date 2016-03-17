@@ -1,0 +1,14 @@
+{
+  "name": "LLR Sign-in Board Mobile",
+  "icons": [
+    {
+      "src": "signin_icon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "density": "4.0"
+    }
+  ],
+  "start_url": "update-mobile.php",
+  "display": "standalone",
+  "orientation": "portrait"
+}

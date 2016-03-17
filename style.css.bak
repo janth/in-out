@@ -1,0 +1,135 @@
+body {
+color: #000000;
+background-color: #cccccc;
+font-family: "Lucida Sans", sans-serif;
+font-size: 12px;
+}
+
+@media print {
+.noprint, .noprint * {
+  display: none !important;
+}
+}
+
+.clear {
+clear: both;
+}
+
+p {
+border: 0;
+padding: 0;
+margin: 0;
+}
+
+table {
+ border-collapse: collapse; 
+}
+
+td {
+text-align: center; 
+padding: 4px 3px;
+border: 1px solid;
+}
+
+input {
+ border: none; 
+}
+
+input.button {
+ border: 1px solid;
+ padding: 5px;
+ margin: 10px;
+}
+
+tr.header {
+ font-weight: 900; 
+}
+
+tr.header td {
+ text-align: left; 
+}
+
+a {
+text-decoration: none;
+}
+
+h2 {
+background-color: #000000;
+color: #ffffff;
+padding: 5px;
+margin: 5px 10px 0 10px;
+}
+
+.group {
+border: #000000 2px solid;
+margin: 0 10px 20px 10px;
+padding: 10px;
+background-color: #ffffff;
+}
+
+.group-column {
+float: left;
+width: 20%;
+}
+
+.employee-data {
+color: #ffffff;
+padding: 5px;
+margin: 2px;
+background: url(bg_employee.png) top left repeat-x;
+overflow: hidden;
+}
+
+.employee-data-section {
+float: left;
+margin-right: 10px;
+overflow: hidden;
+}
+
+.employee-notes-section {
+float: right;
+margin-left: 5px;
+overflow: hidden;
+}
+
+.employee-keyholder-section {
+float: right;
+margin-left: 5px;
+}
+
+.employee-firstname {
+font-size: 1.2em;
+}
+
+.employee-surname {
+font-size: 1.6em;
+font-weight: 900;
+text-transform: uppercase;
+margin-top: -.2em;
+}
+
+.employee-status {
+margin: 1.2em 0 0 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
