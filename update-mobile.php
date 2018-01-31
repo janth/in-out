@@ -17,7 +17,7 @@ require('data.php');
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="viewport" content="user-scalable=no" />
 
-<meta name="application-name" content="LLR Sign-in Board">
+<meta name="application-name" content="<?php echo $settings['Company']; ?> Sign-in Board">
 
 <link rel="shortcut icon" sizes="196x196" href="/signin_icon.png">
 

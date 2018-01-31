@@ -57,7 +57,7 @@ default :           $settings['page'] = 'headoffice';
 
 <?php
 // Show current time
-echo('<p style="margin-top:.5em;text-align:center;font-weight:bold;font-size:2em;">' . date("g:i") . '<span style="font-size:60%;">' . date("A") . '</span><br /><span style="font-size:40%">' . date("l F\&\\n\b\s\p\;jS") . '</span></p>');
+echo('<p style="margin-top:.5em;text-align:center;font-weight:bold;font-size:2em;">' . date("H:i") . '</span><br /><span style="font-size:40%">' . date("l j F Y\&\\n\b\s\p\;") . '</span></p>');
 
 // Show various options
 displaySideMenuItem('Head office<br /><span style="font-size:.5em;">(and all signed-in people)</span>', 'headoffice');

@@ -13,7 +13,7 @@ if (isset($_GET['action'])) { // perform action
 
 }
 
-$floors = getFloors();
+if ($settings['floors'] === 1) { $floors = getFloors(); }
 $statuses = getStatuses();
 $teams = getTeams();
 $departments = getDepartments();

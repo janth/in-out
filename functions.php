@@ -1,9 +1,70 @@
 <?php
 
-$db_connection = mysql_connect($db_server, $db_user, $db_password) or die(mysql_error());
-mysql_select_db($db_database) or die(mysql_error());
+#$db_connection = mysql_connect($db_server, $db_user, $db_password) or die(mysql_error());
+#$db_connection = new mysqli($db_server, $db_user, $db_password, $db_database, $db_port, $db_socket)
+$db_connection = new mysqli($db_server, $db_user, $db_password, $db_database)
+	or die ('Could not connect to the database server: ' . $db_connection->connection_errno . ' ' . $db_connection->connection_error);
+/*
+mysql_query($sql) -> $db_connection->query($sql)
+mysql_fetch_array($result) -> $result->fetch_array(MYSQLI_ASSOC)
+*/
+error_log("Connected to db ok");
 
+$tmp_msg_str = sprintf("Initial character set: %s\n", $db_connection->character_set_name());
+error_log($tmp_msg_str);
 
+/* change character set to utf8 */
+if (!$db_connection->set_charset("utf8")) {
+   printf("Error loading character set utf8: %s\n", $db_connection->error);
+   exit();
+} #else { printf("Current character set: %s\n", $db_connection->character_set_name()); }
+
+function Menu() {
+   global $settings;
+   $company = $settings['Company'];
+   echo <<<EOT
+
+<div class="menu-bar">
+
+<a href="edit.php">edit</a> |
+<a href="update-flexbox.php">update-flexbox</a> |
+<a href="update-mobile.php">update-mobile</a> |
+
+<a href="index-menu.html">index menu</a>
+</div>
+
+<div class="content">
+   <h1>$company Staff currently signed in</h1>
+   <hr>
+EOT;
+/*
+<a href="edit.php" title="Update board">EDIT BOARD</a> |
+<a href="index.php?page=everyone" title="View everyone">VIEW EVERYONE</a> | 
+<a href="index.php?page=public" title="View everyone">PUBLIC DISPLAY</a> | 
+<a href="floors.php" title="View by floor">VIEW BY FLOOR</a> | 
+<a href="treams.php" title="View by team">VIEW BY TEAM</a> | 
+<a href="index.php?page=keys" title="View keyholders">VIEW KEYHOLDERS</a> | 
+<a href="index.php?page=in" title="View people currently in the building">CURRENTLY IN THE BUILDING</a> |
+<a href="board.php">board</a> |
+<a href="checklist.php">checklist</a> |
+<a href="phone.php">phone</a> |
+<a href="signin.php">signin</a> |
+<a href="update.php">update</a> |
+<a href="style.php">style</a> |
+<a href="style-update.php">style-update</a> |
+<a href="style-public.php">style-public</a> |
+<a href="style-tablet.php">style-tablet</a> |
+*/
+}
+
+function Title($page) {
+   global $settings;
+   $company = $settings['Company'];
+   /* <title><?php echo $settings['Company']; ?> Staff in the building (by floor)</title> */
+   echo <<<EOT
+   IBM I/O - $page
+EOT;
+}
 
 function getDepartmentName($departmentID) {
 	global $departments;
@@ -65,8 +126,9 @@ function getStatusText($statusID) {
 }
 
 function updateEmployeeStatus($employeeID, $newStatus = 1) {
+  global $db_connection;
   $sql = 'UPDATE `employees` SET `status` = '.$newStatus.' WHERE id = ' . $employeeID;
-  mysql_query($sql);
+  $results = $db_connection->query($sql);
 }
 
 
@@ -458,67 +520,99 @@ echo('</div>');
 
 function getFloors () {
 	global $db_connection;
-	$sql = 'SELECT * FROM floors';
-	$results = mysql_query($sql);
 	$floors = array();
-	while ($result = mysql_fetch_array($results)) {
-		$floors[] = $result;
-	}
-	return $floors;
+	$sql = 'SELECT * FROM floors';
+   $results = $db_connection->query($sql);
+   if ($results) {
+      while ($result = $results->fetch_array(MYSQLI_ASSOC)) {
+         $floors[] = $result;
+      }
+      return $floors;
+   } else {
+      error_log($db_connection->error);
+      echo($db_connection->error);
+      exit;
+   }
 }
 
 function getStatuses () {
 	global $db_connection;
-	$sql = 'SELECT * FROM statuses';
-	$results = mysql_query($sql);
 	$statuses = array();
-	while ($result = mysql_fetch_array($results)) {
-		$statuses[] = $result;
-	}
-	return $statuses;
+	$sql = 'SELECT * FROM statuses';
+	$results = $db_connection->query($sql);
+   if ($results) {
+      while ($result = $results->fetch_array(MYSQLI_ASSOC)) {
+         $statuses[] = $result;
+      }
+      return $statuses;
+   } else {
+      error_log($db_connection->error);
+      echo($db_connection->error);
+      exit;
+   }
 }
 
 function getTeams () {
 	global $db_connection;
-	$sql = 'SELECT * FROM teams WHERE name != "Unassigned" ORDER BY name';
-	$results = mysql_query($sql);
 	$teams = array();
 	$teams[] = Array('id' => 0, 'name' => '');
-	while ($result = mysql_fetch_array($results)) {
-		$teams[] = $result;
-	}
-	return $teams;
+	$sql = 'SELECT * FROM teams WHERE name != "Unassigned" ORDER BY name';
+	$results = $db_connection->query($sql);
+   if ($results) {
+      while ($result = $results->fetch_array(MYSQLI_ASSOC)) {
+         $teams[] = $result;
+      }
+      return $teams;
+   } else {
+      error_log($db_connection->error);
+      echo($db_connection->error);
+      exit;
+   }
 }
 
 function getDepartments ($where = '1=1', $order = 'name') {
 	global $db_connection;
-	$sql = 'SELECT * FROM departments WHERE name != "Unassigned" AND (' . $where . ') ORDER BY ' . $order ;
-	$results = mysql_query($sql);
 	$departments = array();
 	$departments[] = Array('id' => 0, 'name' => '');
-	while ($result = mysql_fetch_array($results)) {
-		$departments[] = $result;
-	}
-	return $departments;
+	$sql = 'SELECT * FROM departments WHERE name != "Unassigned" AND (' . $where . ') ORDER BY ' . $order ;
+	$results = $db_connection->query($sql);
+   if ($results) {
+      while ($result = $results->fetch_array(MYSQLI_ASSOC)) {
+         $departments[] = $result;
+      }
+      return $departments;
+   } else {
+      error_log($db_connection->error);
+      echo($db_connection->error);
+      exit;
+   }
 }
 
 function getEmployees ($where = '', $order = 'firstname, surname') {
 	global $db_connection;
-	$sql = 'SELECT * FROM employees' . ($where==''?'':' WHERE '.$where) . ' ORDER BY ' . $order;
-	$results = mysql_query($sql);
 	$employees = array();
-	while ($result = mysql_fetch_array($results)) {
-		$employees[] = $result;
-	}
-	return $employees;
+	$sql = 'SELECT * FROM employees' . ($where==''?'':' WHERE '.$where) . ' ORDER BY ' . $order;
+	$results = $db_connection->query($sql);
+   if ($results) {
+      // echo("DBG: Fetcing results from query $sql\n<br><br>");
+      while ($result = $results->fetch_array(MYSQLI_ASSOC)) {
+         $employees[] = $result;
+         // echo("result: $result\n\n");
+      }
+      return $employees;
+   } else {
+      error_log($db_connection->error);
+      echo($db_connection->error);
+      exit;
+   }
 }
 
 
 function getEmployee ($id) {
 	global $db_connection;
 	$sql = 'SELECT * FROM employees WHERE id = ' . $id;
-	$response = mysql_query($sql);
-	$employee = mysql_fetch_array($response);
+	$response = $db_connection->query($sql);
+	$employee = $results->fetch_array(MYSQLI_ASSOC);
 	return $employee;
 }
 

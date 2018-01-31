@@ -68,7 +68,7 @@ $list = getEmployees($where_clause, $order_by);
 
 
 
-<h1 class="checklist">LLR Phonelist</h1>
+<h1 class="checklist"><?php echo $settings['Company']; ?> Phonelist</h1>
 
 
 <?php showSelector($selection); ?>

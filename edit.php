@@ -11,24 +11,7 @@ require('data.php');
 
 </head>
 <body>
-
-<!--
-<div class="menu-bar">
-<p style="float:right;">
-<a style="color:#dddddd" href="edit.php" title="Update board">EDIT BOARD</a> 
-</p>
-
-<p>
-<a href="index.php?page=everyone" title="View everyone">VIEW EVERYONE</a> | 
-<a href="index.php?page=public" title="View everyone">PUBLIC DISPLAY</a> | 
-<a href="index.php?page=floor" title="View by floor">VIEW BY FLOOR</a> | 
-<a href="index.php?page=keys" title="View keyholders">VIEW KEYHOLDERS</a> | 
-<a href="index.php?page=in" title="View people currently in the building">CURRENTLY IN THE BUILDING</a>
-</p>
-
-</div>
--->
-
+<?php Menu(); ?>
 <h1>Edit sign-in board</h1>
 
 <?php
@@ -40,14 +23,20 @@ if (isset($_GET['remove'])) {
 
 $sql = 'SELECT * FROM `employees` WHERE `id` = ' . $_GET['remove'];
 
-$results = mysql_query($sql);
-$employee = mysql_fetch_assoc($results);
+$results = $db_connection->query($sql);
+if ($results) {
+   $employee = mysql_fetch_assoc($results);
+} else {
+   error_log($db_connection->error);
+   echo($db_connection->error);
+   exit;
+}
 
 if (isset($_GET['confirm']) && $_GET['confirm'] == 'yes') {
 
 $sql = 'DELETE FROM `employees` WHERE `id` = '.$_GET['remove'];
 
-      $query = mysql_query($sql);
+      $query = $db_connection->query($sql);
 
       if(!$query) {
       echo('An error occurred removing "'.$employee['firstname'].' '.$employee['surname'].'" - please check settings');
@@ -88,7 +77,7 @@ if (isset($_POST['new_firstname'])
       addslashes($_POST['new_linemanager']).
       ')';
 
-      $query = mysql_query($sql);
+      $query = $db_connection->query($sql);
 
       if(!$query) {
       echo('An error occurred saving new person "'.$_POST['new_firstname'].' '.$_POST['new_surname'].'" - please check settings');
@@ -104,7 +93,7 @@ for ($i = 0 ; $i < $_POST['employeeCount'] ; $i++) {
 
 $sql = 'UPDATE `employees` SET `firstname` = "'.addslashes($_POST[$i.'_firstname']).'", `surname` = "'.addslashes($_POST[$i.'_surname']).'", `floor` = '.addslashes($_POST[$i.'_floor']).', `keyholder` = '.(isset($_POST[$i.'_keyholder'])?1:0).', `status` = '.(($_POST[$i.'_status']>=0)?addslashes($_POST[$i.'_status']):'`status`').', `team` = '.addslashes($_POST[$i.'_team']).', `phone` = "'.addslashes($_POST[$i.'_phone']).'", `department` = '.addslashes($_POST[$i.'_department']).', `linemanager` = '.addslashes($_POST[$i.'_linemanager']).' WHERE `id` = '.$_POST[$i.'_id'];
 
-$query = mysql_query($sql);
+$query = $db_connection->query($sql);
 
 if(!$query) {
  echo('An error occurred saving "'.$_POST[$i.'_firstname'].' '.$_POST[$i.'_surname'].'" - please check settings<br />');

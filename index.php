@@ -6,7 +6,7 @@ require('data.php');
 
 <html>
 <head>
-<title>LLR Staff in the building</title>
+<title><?php echo $settings['Company']; ?> Staff in the building</title>
 <link rel="stylesheet" href="style.css" />
 
 <?php
@@ -19,7 +19,7 @@ if ($settings['refresh-rate'] > 0) {
 </head>
 
 <body>
-<h1>LLR Staff currently signed in</h1>
+<h1><?php echo $settings['Company']; ?> Staff currently signed in</h1>
 <p>(&nbsp;&nbsp;&nbsp;<a href="floors.php">View by floor</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="teams.php">View by team</a>&nbsp;&nbsp;&nbsp;)<br /><br /></p>
 
 <?php

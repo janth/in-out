@@ -6,7 +6,7 @@ require('data.php');
 
 <html>
 <head>
-<title>LLR Staff in the building (by floor)</title>
+<title><?php Title('floor'); ?></title>
 <link rel="stylesheet" href="style.css" />
 
 <?php
@@ -19,9 +19,7 @@ if ($settings['refresh-rate'] > 0) {
 </head>
 
 <body>
-<h1>LLR Staff currently signed in</h1>
-<p>(&nbsp;&nbsp;&nbsp;<a href="floors.php">View by floor</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="teams.php">View by team</a>&nbsp;&nbsp;&nbsp;)<br /><br /></p>
-
+<?php Menu(); ?>
 <?php
 
 	foreach ($floors as $floor) {

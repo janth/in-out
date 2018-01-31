@@ -4,9 +4,9 @@
 function getAllTemplates () {
 	global $db_connection;
 	$sql = 'SELECT * FROM `templates` ORDER BY `name`';
-	$results = mysql_query($sql);
+	$results = $db_connection->query($sql);
 	$templates = array();
-	while ($result = mysql_fetch_array($results)) {
+	while ($result = $result->fetch_array(MYSQLI_ASSOC)) {
 		$templates[] = $result;
 	}
 	return $templates;
@@ -16,9 +16,9 @@ function getAllTemplates () {
 function getAllColours () {
 	global $db_connection;
 	$sql = 'SELECT * FROM `colours` ORDER BY `name`';
-	$results = mysql_query($sql);
+	$results = $db_connection->query($sql);
 	$colours = array();
-	while ($result = mysql_fetch_array($results)) {
+	while ($result = $result->fetch_array(MYSQLI_ASSOC)) {
 		$colours[] = $result;
 	}
 	return $colours;
@@ -27,9 +27,9 @@ function getAllColours () {
 function getAllFonts () {
 	global $db_connection;
 	$sql = 'SELECT * FROM `fonts` ORDER BY `name`';
-	$results = mysql_query($sql);
+	$results = $db_connection->query($sql);
 	$fonts = array();
-	while ($result = mysql_fetch_array($results)) {
+	while ($result = $result->fetch_array(MYSQLI_ASSOC)) {
 		$fonts[] = $result;
 	}
 	return $fonts;
@@ -39,9 +39,9 @@ function getAllFonts () {
 function getTemplateFields ($template_id) {
 	global $db_connection;
 	$sql = 'SELECT * FROM `fields` WHERE `template_id` = '.$template_id.' ORDER BY `name`';
-	$results = mysql_query($sql);
+	$results = $db_connection->query($sql);
 	$fields = array();
-	while ($result = mysql_fetch_array($results)) {
+	while ($result = $result->fetch_array(MYSQLI_ASSOC)) {
 		$fields[] = $result;
 	}
 	return $fields;
